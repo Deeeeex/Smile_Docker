@@ -21,7 +21,7 @@ urlpatterns = [
     path("service/", include("service.urls")),
     path("application/", include("application.urls")),
     path("image/", include("image.urls")),
-    path("container/", include("node.urls")),
+    path("container/", include("container.urls")),
     path("deployment/", include("deployment.urls")),
     path("k8s/", include("k8s.urls")),
 ]
