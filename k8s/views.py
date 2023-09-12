@@ -69,7 +69,7 @@ def run_pod(request):
                 'image': request.POST.get('image'),
                 'ports': [{
                     'containerPort': int(container_port),
-                    'hostPort': int(host_post)
+                    'hostPort': int(host_port)
                 }],
                 'env': environment
             }]
