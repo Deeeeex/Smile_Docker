@@ -59,7 +59,7 @@ def run_pod(request):
         'metadata': {
             'name': 'pod',
             'labels': {
-                'user': 1
+                'user': '1'
             }
         },
         'spec': {
