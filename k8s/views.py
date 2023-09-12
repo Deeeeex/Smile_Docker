@@ -13,9 +13,14 @@ def list_nodes(request):
     ret = client.CoreV1Api().list_node()
     arr = []
     for i in ret.items:
-        dic = {'kind': i.kind, 'name': i.metadata.name, 'namespace': i.metadata.namespace,
-               'creation_timestamp': i.metadata.creation_timestamp, 'allocatable': i.status.allocatable,
-               'phase': i.status.phase}
+        dic = {'kind': i.kind,
+               'name': i.metadata.name,
+               'namespace': i.metadata.namespace,
+               'creation_timestamp': i.metadata.creation_timestamp,
+               'allocatable': i.status.allocatable,
+               'phase': i.status.phase,
+               }
+        print(i.status.capacity)
         arr.append(dic)
 
     return JsonResponse(arr, safe=False)
@@ -25,11 +30,8 @@ def list_pods(request):
     ret = client.CoreV1Api().list_pod_for_all_namespaces(watch=False)
     arr = []
     for i in ret.items:
-        dic = {}
-        dic['namespace'] = i.metadata.namespace
-        dic['name'] = i.metadata.name
-        dic['creation_timestamp'] = i.metadata.creation_timestamp
-        dic['pod_ip'] = i.status.pod_ip
+        dic = {'namespace': i.metadata.namespace, 'name': i.metadata.name,
+               'creation_timestamp': i.metadata.creation_timestamp, 'pod_ip': i.status.pod_ip}
         container_statuses = []
         for status in i.status.container_statuses:
             s = {'name': status.name, 'container_id': status.container_id, 'image_id': status.image_id,

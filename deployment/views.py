@@ -12,12 +12,9 @@ def list_deployments(request):
     ret = client.AppsV1Api().list_deployment_for_all_namespaces()
     arr = []
     for i in ret.items:
-        dic = {}
-        dic['name'] = i.metadata.name
-        dic['creation_timestamp'] = i.metadata.creation_timestamp
-        dic['namespace'] = i.metadata.namespace
-        dic['available_replicas'] = i.status.available_replicas
-        dic['replicas'] = i.status.replicas
+        dic = {'name': i.metadata.name, 'creation_timestamp': i.metadata.creation_timestamp,
+               'namespace': i.metadata.namespace, 'available_replicas': i.status.available_replicas,
+               'replicas': i.status.replicas}
         arr.append(dic)
 
     return JsonResponse(arr, safe=False)

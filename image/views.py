@@ -11,6 +11,7 @@ import docker
 
 client = docker.from_env()
 
+
 def list_images(request):
     images = client.images.list()
     arr = []
