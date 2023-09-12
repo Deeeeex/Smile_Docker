@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render
 
 # Create your views here.
@@ -44,4 +46,34 @@ def list_pods(request):
     return JsonResponse(arr, safe=False)
 
 
+def run_pod(request):
+    api_instance = client.CoreV1Api()
+    environment = json.loads(request.POST.get('environment[]'))
+    container_ports = request.POST.get('container_ports[]')
+    host_posts = request.POST.get('host_posts[]')
+    # volumes = request.POST.get('volumes[]')
 
+    pod_manifest = {
+        'apiVersion': 'v1',
+        'kind': 'Pod',
+        'metadata': {
+            'name': 'pod',
+            'labels': {
+                'user': 1
+            }
+        },
+        'spec': {
+            'containers': [{
+                'name': request.form['name'],
+                'image': request.form['image'],
+                'ports': [{
+                    'containerPort': container_ports,
+                    'hostPort': host_posts
+                }],
+                'env': environment
+            }]
+        }
+    }
+    ret = client.CoreV1Api.create_namespaced_pod(api_instance, body=pod_manifest, namespace='1')
+    return JsonResponse({'status': 'success',
+                         'ret': ret})
