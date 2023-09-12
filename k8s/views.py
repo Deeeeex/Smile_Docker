@@ -74,6 +74,6 @@ def run_pod(request):
             }]
         }
     }
-    ret = client.CoreV1Api.create_namespaced_pod(api_instance, body=pod_manifest, namespace='1')
+    ret = client.CoreV1Api.create_namespaced_pod(api_instance, body=pod_manifest, namespace='default')
     return JsonResponse({'status': 'success',
                          'ret': ret})
