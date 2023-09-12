@@ -1,0 +1,31 @@
+nohup: ignoring input
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 18 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
+Run 'python manage.py migrate' to apply them.
+September 12, 2023 - 10:09:14
+Django version 4.2.5, using settings 'Smile_Docker.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+
+[12/Sep/2023 10:09:29] "GET /k8s/list_nodes HTTP/1.1" 301 0
+{'cpu': '4', 'ephemeral-storage': '15412168Ki', 'hugepages-1Gi': '0', 'hugepages-2Mi': '0', 'memory': '8152844Ki', 'pods': '110'}
+{'cpu': '4', 'ephemeral-storage': '15412168Ki', 'hugepages-1Gi': '0', 'hugepages-2Mi': '0', 'memory': '8152844Ki', 'pods': '110'}
+{'cpu': '4', 'ephemeral-storage': '15412168Ki', 'hugepages-1Gi': '0', 'hugepages-2Mi': '0', 'memory': '8152852Ki', 'pods': '110'}
+[12/Sep/2023 10:09:29] "GET /k8s/list_nodes/ HTTP/1.1" 200 798
+/home/buaa/Smile_Docker/k8s/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 18 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
+Run 'python manage.py migrate' to apply them.
+September 12, 2023 - 10:13:09
+Django version 4.2.5, using settings 'Smile_Docker.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+
