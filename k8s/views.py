@@ -64,8 +64,8 @@ def run_pod(request):
         },
         'spec': {
             'containers': [{
-                'name': request.POST.get['name'],
-                'image': request.POST.get['image'],
+                'name': request.POST.get('name'),
+                'image': request.POST.get('image'),
                 'ports': [{
                     'containerPort': container_ports,
                     'hostPort': host_posts
