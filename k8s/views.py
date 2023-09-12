@@ -50,8 +50,8 @@ def list_pods(request):
 def run_pod(request):
     core_v1_api = client.CoreV1Api()
     environment = json.loads(request.POST.get('environments'))
-    container_ports = request.POST.get('container_ports')
-    host_posts = request.POST.get('host_posts')
+    container_port = request.POST.get('container_port')
+    host_port = request.POST.get('host_post')
     # volumes = request.POST.get('volumes[]')
 
     pod_manifest = {
@@ -68,8 +68,8 @@ def run_pod(request):
                 'name': request.POST.get('name'),
                 'image': request.POST.get('image'),
                 'ports': [{
-                    'containerPort': int(container_ports),
-                    'hostPort': int(host_posts)
+                    'containerPort': int(container_port),
+                    'hostPort': int(host_post)
                 }],
                 'env': environment
             }]
