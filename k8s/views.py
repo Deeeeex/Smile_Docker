@@ -28,7 +28,8 @@ def list_nodes(request):
 
 
 def list_pods(request):
-    ret = client.CoreV1Api().list_pod_for_all_namespaces(watch=False)
+    ret = client.CoreV1Api().list_pod_for_all_namespaces(watch=False,
+                                                         label_selector='1')
     arr = []
     for i in ret.items:
         dic = {'namespace': i.metadata.namespace, 'name': i.metadata.name,
