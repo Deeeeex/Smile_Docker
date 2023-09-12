@@ -47,6 +47,7 @@ def list_pods(request):
 
 
 def run_pod(request):
+    core_v1_api = client.CoreV1Api()
     environment = json.loads(request.POST.get('environment[]'))
     container_ports = request.POST.get('container_ports[]')
     host_posts = request.POST.get('host_posts[]')
@@ -73,7 +74,7 @@ def run_pod(request):
             }]
         }
     }
-    ret = client.CoreV1Api.create_namespaced_pod(body=pod_manifest, namespace='default')
+    ret = core_v1_api.create_namespaced_pod(body=pod_manifest, namespace='default')
 
     api_client = client.ApiClient()
     serialized_response = api_client.sanitize_for_serialization(ret)
