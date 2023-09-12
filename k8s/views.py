@@ -19,11 +19,7 @@ def list_nodes(request):
                'creation_timestamp': i.metadata.creation_timestamp,
                'allocatable': i.status.allocatable,
                'phase': i.status.phase,
-               'cpu': i.status.capacity['cpu'],
-               'ephemeral-storage': i.status.capacity['ephemeral-storage'],
-               'memory': i.status.capacity['memory'],
                }
-        # print(i.status.capacity)
         arr.append(dic)
 
     return JsonResponse(arr, safe=False)
