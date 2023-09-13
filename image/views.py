@@ -20,7 +20,7 @@ def list_images(request):
         dic = {"attrs": image.attrs, "id": image.id, "labels": image.labels, "short_id": image.short_id,
                "tags": image.tags}
         arr.append(dic)
-    return JsonResponse(arr)
+    return JsonResponse(arr, safe=False)
 
 
 def remove_image(request):
