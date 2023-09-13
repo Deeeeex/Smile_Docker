@@ -14,6 +14,7 @@ client = docker.from_env()
 
 def list_images(request):
     images = client.images.list()
+    print(images)
     arr = []
     for image in images:
         dic = {"attrs": image.attrs, "id": image.id, "labels": image.labels, "short_id": image.short_id,
