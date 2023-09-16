@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "deployment",
     "k8s",
     "service",
+    'user',
 ]
 
 MIDDLEWARE = [
