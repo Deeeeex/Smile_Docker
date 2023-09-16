@@ -13,12 +13,17 @@ client = docker.from_env()
 
 
 def list_images(request):
+    # user_id = request.POST.get('user_id')
     images = client.images.list()
-    print(images)
+    # print(images)
     arr = []
     for image in images:
-        dic = {"attrs": image.attrs, "id": image.id, "labels": image.labels, "short_id": image.short_id,
+        dic = {"attrs": image.attrs,
+               "id": image.id,
+               "labels": image.labels,
+               "short_id": image.short_id,
                "tags": image.tags}
+        # 需要添加按用户id筛选
         arr.append(dic)
     return JsonResponse(arr, safe=False)
 
