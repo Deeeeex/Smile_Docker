@@ -20,7 +20,7 @@ def login(request):
                     'errno': 0,
                     'msg': "登录成功",
                     'user_id': user.user_id,
-                    'user_name': user.user_name
+                    'username': user.user_name
                 })
             else:
                 return JsonResponse({'errno': 100003, 'msg': "密码错误"})
