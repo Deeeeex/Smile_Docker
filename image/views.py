@@ -1,3 +1,6 @@
+import os
+import tempfile
+
 from django.shortcuts import render
 
 # Create your views here.
@@ -52,5 +55,22 @@ def pull_image_repository(request):
 
 
 def build_image(request):
-    client.images.build(fileobj=request.FILES.get('dockerfile'), tag=request.POST.get('tags'))
-    return JsonResponse('dockerfile构建成功', safe=False)
+    dockerfile = request.FILES.get('dockerfile')
+    tags = request.POST.get('tags')
+
+    # 将文件对象保存到临时文件中
+    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        for chunk in dockerfile.chunks():
+            temp_file.write(chunk)
+
+    try:
+        # 使用临时文件路径来构建镜像
+        client.images.build(path=temp_file.name, tag=tags)
+        response = 'dockerfile构建成功'
+    except Exception as e:
+        response = f'构建镜像时出现错误: {str(e)}'
+
+    # 删除临时文件
+    os.remove(temp_file.name)
+
+    return JsonResponse(response, safe=False)
