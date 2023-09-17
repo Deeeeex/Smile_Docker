@@ -52,5 +52,5 @@ def pull_image_repository(request):
 
 
 def build_image(request):
-    client.images.build(fileobj=request.POST.get('dockerfile'), tag=request.POST.get('tags'))
+    client.images.build(fileobj=request.FILES.get('dockerfile'), tag=request.POST.get('tags'))
     return JsonResponse('dockerfile构建成功', safe=False)
