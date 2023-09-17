@@ -24,4 +24,5 @@ urlpatterns = [
     path("container/", include("container.urls")),
     path("deployment/", include("deployment.urls")),
     path("k8s/", include("k8s.urls")),
+    path("user/", include("user.urls")),
 ]
