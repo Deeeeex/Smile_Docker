@@ -21,8 +21,8 @@ def list_images(request):
     for image in images:
         name, version = image.tags[0].rsplit(':', 1)
         dic = {"id": image.id,
-               "size": image.attrs.Size,
-               "create_time": image.attrs.Created,
+               "size": image.attrs['Size'],
+               "create_time": image.attrs['Created'],
                "names": name,
                "tag": version}
         # 需要添加按用户id筛选
