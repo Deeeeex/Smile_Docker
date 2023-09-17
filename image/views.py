@@ -36,21 +36,21 @@ def remove_image(request):
     image_id = request.POST.get('image_id')
     client.images.remove(image_id)
     return JsonResponse({
-        "msg": "remove success"
+        "msg": "删除镜像成功"
     })
 
 
 def pull_image(request):
     client.images.pull(request.POST.get('name'), tag=request.POST.get('tags'))
-    return JsonResponse('pull success', safe=False)
+    return JsonResponse('拉取成功', safe=False)
 
 
 def pull_image_repository(request):
     client.images.pull(tag=request.POST.get('tags'),
                        repository=request.POST.get('repository'))
-    return JsonResponse('pull success', safe=False)
+    return JsonResponse('拉取成功', safe=False)
 
 
 def build_image(request):
     client.images.build(fileobj=request.POST.get('dockerfile'), tag=request.POST.get('tags'))
-    return JsonResponse('build success', safe=False)
+    return JsonResponse('dockerfile构建成功', safe=False)
