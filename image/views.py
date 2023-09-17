@@ -1,4 +1,5 @@
 import os
+import shutil
 import tempfile
 
 from django.shortcuts import render
@@ -58,19 +59,21 @@ def build_image(request):
     dockerfile = request.FILES.get('dockerfile')
     tags = request.POST.get('tags')
 
-    # 将文件对象保存到临时文件中
-    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+    # 将 Dockerfile 保存到临时目录中
+    temp_dir = tempfile.mkdtemp()
+    dockerfile_path = os.path.join(temp_dir, 'Dockerfile')
+    with open(dockerfile_path, 'wb') as file:
         for chunk in dockerfile.chunks():
-            temp_file.write(chunk)
+            file.write(chunk)
 
     try:
-        # 使用临时文件路径来构建镜像
-        client.images.build(path=temp_file.name, tag=tags)
+        # 使用临时目录路径作为构建路径
+        client.images.build(path=temp_dir, tag=tags)
         response = 'dockerfile构建成功'
     except Exception as e:
         response = f'构建镜像时出现错误: {str(e)}'
 
-    # 删除临时文件
-    os.remove(temp_file.name)
+    # 删除临时目录及其内容
+    shutil.rmtree(temp_dir)
 
     return JsonResponse(response, safe=False)
