@@ -9,7 +9,7 @@ from docker import APIClient
 # client = APIClient()
 import docker
 
-from image.utils import convert_bytes_to_human_readable
+from image.utils import *
 
 client = docker.from_env()
 
@@ -21,12 +21,13 @@ def list_images(request):
     # print(images)
     arr = []
     for image in images:
-        name, version = image.tags[0].rsplit(':', 1)
+        name, version, tags = get_image_info(image)
         dic = {"id": image.id,
                "size": convert_bytes_to_human_readable(image.attrs['Size']),
                "create_time": image.attrs['Created'],
                "names": name,
-               "tag": version}
+               "version": version,
+               "tag": tags}
         # 需要添加按用户id筛选
         arr.append(dic)
     return JsonResponse(arr, safe=False)
