@@ -23,7 +23,8 @@ def list_images(request):
     for image in images:
         print(image.tags)
         name, version, tags = get_image_info(image)
-        flag = False
+        # 暂停用户隔离改为True
+        flag = True
         for tag in tags:
             if tag == user_id:
                 flag = True
@@ -31,8 +32,7 @@ def list_images(request):
                "size": convert_bytes_to_human_readable(image.attrs['Size']),
                "create_time": image.attrs['Created'],
                "names": name,
-               "version": version,
-               "tag": tags}
+               "version": tags}
         # 需要添加按用户id筛选
         if flag is True:
             arr.append(dic)
