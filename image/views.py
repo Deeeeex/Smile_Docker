@@ -9,6 +9,8 @@ from docker import APIClient
 # client = APIClient()
 import docker
 
+from image.utils import convert_bytes_to_human_readable
+
 client = docker.from_env()
 
 
@@ -21,7 +23,7 @@ def list_images(request):
     for image in images:
         name, version = image.tags[0].rsplit(':', 1)
         dic = {"id": image.id,
-               "size": image.attrs['Size'],
+               "size": convert_bytes_to_human_readable(image.attrs['Size']),
                "create_time": image.attrs['Created'],
                "names": name,
                "tag": version}
