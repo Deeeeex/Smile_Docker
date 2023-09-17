@@ -21,12 +21,15 @@ client = docker.from_env()
 
 def list_images(request):
     user_id = request.POST.get('user_id')
-    keyword = request.POST.get('keyword')
+    keyword = request.POST.get('search')
     images = client.images.list()
     # print(images)
     arr = []
     for image in images:
         name, version = image.tags[0].rsplit(':', 1)
+        if keyword != "":
+            if keyword not in name:
+                continue
         dic = {"id": image.short_id.split(":")[1],
                "size": convert_bytes_to_human_readable(image.attrs['Size']),
                "create_time": image.attrs['Created'].split('T')[0],
