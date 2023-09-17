@@ -41,10 +41,10 @@ def remove_image(request):
 
 
 def pull_image(request):
-    client.images.pull(repository=request.form['repository'])
+    client.images.pull(request.POST.get('name'), tag=request.POST.get('tags'))
     return JsonResponse('pull success', safe=False)
 
 
 def build_image(request):
-    client.images.build(fileobj=request.files.get('dockerfile'), tag=request.form['tag'])
+    client.images.build(fileobj=request.POST.get('dockerfile'), tag=request.POST.get('tags'))
     return JsonResponse('build success', safe=False)

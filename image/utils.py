@@ -23,3 +23,4 @@ def get_image_info(image):
     tags = [tag.split(':')[1] for tag in image.tags] if image.tags else []
 
     return name, version, tags
+
