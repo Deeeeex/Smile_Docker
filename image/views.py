@@ -22,9 +22,9 @@ def list_images(request):
     arr = []
     for image in images:
         name, version = image.tags[0].rsplit(':', 1)
-        dic = {"id": image.id,
+        dic = {"id": image.short_id,
                "size": convert_bytes_to_human_readable(image.attrs['Size']),
-               "create_time": image.attrs['Created'],
+               "create_time": image.attrs['Created'].split('T')[0],
                "names": name,
                "tag": version}
         # 需要添加按用户id筛选
