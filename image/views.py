@@ -50,7 +50,9 @@ def pull_image(request):
 
 
 def pull_image_repository(request):
-    client.images.pull(request.POST.get('repository'), tag=request.POST.get('tags'))
+    tag = request.POST.get('tags')
+    print(tag)
+    client.images.pull(request.POST.get('repository'), tag=tag)
     return JsonResponse('拉取成功', safe=False)
 
 
