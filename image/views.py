@@ -19,11 +19,13 @@ def list_images(request):
     # print(images)
     arr = []
     for image in images:
-        print(image.tags)
+        name, version = image.tags[0].rsplit(':', 1)
         dic = {"attrs": image.attrs,
                "id": image.id,
                "labels": image.labels,
-               "short_id": image.short_id}
+               "short_id": image.short_id,
+               "names": name,
+               "tag": version}
         # 需要添加按用户id筛选
         arr.append(dic)
     return JsonResponse(arr, safe=False)
