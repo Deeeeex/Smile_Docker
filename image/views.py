@@ -33,7 +33,7 @@ def list_images(request):
 
 
 def remove_image(request):
-    image_id = request.POST['image_id']
+    image_id = request.POST.get('image_id')
     client.images.remove(image_id)
     return JsonResponse('remove success', safe=False)
 
