@@ -45,7 +45,7 @@ def pull_image(request):
     return JsonResponse('pull success', safe=False)
 
 
-def pull_image_registry(request):
+def pull_image_repository(request):
     client.images.pull(tag=request.POST.get('tags'),
                        repository=request.POST.get('repository'))
     return JsonResponse('pull success', safe=False)
