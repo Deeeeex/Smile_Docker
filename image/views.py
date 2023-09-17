@@ -21,15 +21,21 @@ def list_images(request):
     # print(images)
     arr = []
     for image in images:
+        print(image.tags)
         name, version, tags = get_image_info(image)
-        dic = {"id": image.id,
+        flag = False
+        for tag in tags:
+            if tag == user_id:
+                flag = True
+        dic = {"id": image.short_id,
                "size": convert_bytes_to_human_readable(image.attrs['Size']),
                "create_time": image.attrs['Created'],
                "names": name,
                "version": version,
                "tag": tags}
         # 需要添加按用户id筛选
-        arr.append(dic)
+        if flag is True:
+            arr.append(dic)
     return JsonResponse(arr, safe=False)
 
 
