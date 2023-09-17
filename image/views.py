@@ -13,7 +13,8 @@ client = docker.from_env()
 
 
 def list_images(request):
-    # user_id = request.POST.get('user_id')
+    user_id = request.POST.get('user_id')
+    keyword = request.POST.get('keyword')
     images = client.images.list()
     # print(images)
     arr = []
@@ -22,7 +23,8 @@ def list_images(request):
                "id": image.id,
                "labels": image.labels,
                "short_id": image.short_id,
-               "tags": image.tags}
+               "names": image.tags[0],
+               "tag": image.tags[1]}
         # 需要添加按用户id筛选
         arr.append(dic)
     return JsonResponse(arr, safe=False)
