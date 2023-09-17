@@ -35,7 +35,9 @@ def list_images(request):
 def remove_image(request):
     image_id = request.POST.get('image_id')
     client.images.remove(image_id)
-    return JsonResponse('remove success', safe=False)
+    return JsonResponse({
+        "msg": "remove success"
+    })
 
 
 def pull_image(request):
