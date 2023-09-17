@@ -38,7 +38,7 @@ def list_images(request):
 
 def remove_image(request):
     image_id = request.POST.get('image_id')
-    client.images.remove(image_id)
+    client.images.remove(image_id, force=True)
     return JsonResponse({
         "msg": "删除镜像成功"
     })
@@ -50,8 +50,7 @@ def pull_image(request):
 
 
 def pull_image_repository(request):
-    client.images.pull(tag=request.POST.get('tags'),
-                       repository=request.POST.get('repository'))
+    client.images.pull(request.POST.get('repository'), tag=request.POST.get('tags'))
     return JsonResponse('拉取成功', safe=False)
 
 
