@@ -12,6 +12,7 @@ from docker import APIClient
 
 # client = APIClient()
 import docker
+from docker.errors import APIError
 
 from image.utils import convert_bytes_to_human_readable
 
@@ -50,10 +51,18 @@ def pull_image(request):
 
 
 def pull_image_repository(request):
-    tag = request.POST.get('tags')
-    print(tag)
-    client.images.pull(request.POST.get('repository'), tag=tag)
-    return JsonResponse('拉取成功', safe=False)
+    repository = request.POST.get('repository')
+    tag = request.POST.get('tag')
+
+    try:
+        client.images.pull(repository, tag=tag)
+        response = '镜像拉取成功'
+    except APIError as e:
+        response = f'镜像拉取失败: {str(e)}'
+    except Exception as e:
+        response = f'发生错误: {str(e)}'
+
+    return JsonResponse(response, safe=False)
 
 
 def build_image(request):
