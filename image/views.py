@@ -45,6 +45,12 @@ def pull_image(request):
     return JsonResponse('pull success', safe=False)
 
 
+def pull_image_registry(request):
+    client.images.pull(tag=request.POST.get('tags'),
+                       repository=request.POST.get('repository'))
+    return JsonResponse('pull success', safe=False)
+
+
 def build_image(request):
     client.images.build(fileobj=request.POST.get('dockerfile'), tag=request.POST.get('tags'))
     return JsonResponse('build success', safe=False)
