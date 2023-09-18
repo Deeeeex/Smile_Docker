@@ -94,8 +94,8 @@ def create_deployment(request):
     }
 
     try:
-        client.AppsV1Api().create_namespaced_deployment(body=deployment_manifest, namespace="user")
-        client.CoreV1Api().create_namespaced_service(body=service_manifest, namespace="user")
+        client.AppsV1Api().create_namespaced_deployment(body=deployment_manifest, namespace="default")
+        client.CoreV1Api().create_namespaced_service(body=service_manifest, namespace="default")
         response = '工作负载创建成功'
     except Exception as e:
         response = f'工作负载创建失败{str(e)}'
