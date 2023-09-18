@@ -12,7 +12,8 @@ config.load_kube_config()
 
 
 def list_deployments(request):
-    ret = client.AppsV1Api().list_deployment_for_all_namespaces()
+    ret = client.AppsV1Api().list_namespaced_deployment('default',
+                                                        field_selector=f"metadata.labels={'user': '1'}")
     arr = []
     for i in ret.items:
         print(i.metadata.name)
@@ -51,6 +52,9 @@ def create_deployment(request):
         'kind': 'Deployment',
         'metadata': {
             'name': "deployment-"+request.POST.get('name'),
+            'labels': {
+                'user': 1
+            }
         },
         'spec': {
             'replicas': 1,
