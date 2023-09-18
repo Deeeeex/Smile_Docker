@@ -77,7 +77,7 @@ def create_deployment(request):
             'template': {
                 'metadata': {
                     'labels': {
-                        'user': request.POST.get('name')
+                        'deployment': "deployment"+request.POST.get('name')
                     }
                 },
                 'spec': {
