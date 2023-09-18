@@ -31,7 +31,7 @@ def list_deployments(request):
         service = service_list.items[0]
         ret = client.CoreV1Api().list_pod_for_all_namespaces(watch=False,
                                                              label_selector=label_selector_pod)
-
+        pod = ret.items[0]
         dic = {'name': i.metadata.name,
                'creation_timestamp': i.metadata.creation_timestamp,
                'namespace': i.metadata.namespace,
