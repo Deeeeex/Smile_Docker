@@ -13,24 +13,31 @@ config.load_kube_config()
 
 def list_deployments(request):
     label_selector = "user=1"
+    keyword = request.POST.get('search')
     ret = client.AppsV1Api().list_namespaced_deployment('default',
                                                         label_selector=label_selector)
     arr = []
     for i in ret.items:
-        print(i.metadata.name)
+        if keyword != "":
+            if keyword not in i.metadata.name:
+                continue
         service_name = i.metadata.name.replace("deployment", "service")
-        print(service_name)
         service_list = client.CoreV1Api().\
             list_namespaced_service('default',
                                     field_selector=f"metadata.name={service_name}")
         service = service_list.items[0]
+        pod_list = client.CoreV1Api().list_namespaced_pod('default',
+                                                          field_selector=f"metadata.name={keyword}")
+        pod = pod_list.items[0]
         dic = {'name': i.metadata.name,
                'creation_timestamp': i.metadata.creation_timestamp,
                'namespace': i.metadata.namespace,
                'available_replicas': i.status.available_replicas,
                'replicas': i.status.replicas,
                'nodePort': service.spec.ports[0].node_port,
-               'containerPort': service.spec.ports[0].port}
+               'containerPort': service.spec.ports[0].port,
+               'containerId': pod.status.container_statuses[0].container_id,
+               'image': pod.spec.containers[0].image}
         arr.append(dic)
 
     return JsonResponse(arr, safe=False)
@@ -38,7 +45,7 @@ def list_deployments(request):
 
 def delete_deployment(request):
     name = request.POST.get('name')
-    namespace = request.POST.get('namespace')
+    namespace = 'default'
     client.AppsV1Api().delete_namespaced_deployment(name="deployment-"+name, namespace=namespace)
     client.CoreV1Api().delete_namespaced_service(name="service-"+name, namespace=namespace)
     return JsonResponse('delete success', safe=False)
