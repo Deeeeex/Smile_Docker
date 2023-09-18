@@ -53,7 +53,7 @@ def create_deployment(request):
         'metadata': {
             'name': "deployment-"+request.POST.get('name'),
             'labels': {
-                'user': 1
+                'user': '1'
             }
         },
         'spec': {
