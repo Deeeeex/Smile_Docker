@@ -15,11 +15,19 @@ def list_deployments(request):
     ret = client.AppsV1Api().list_deployment_for_all_namespaces()
     arr = []
     for i in ret.items:
+        service_name = i.metadata.name.replace("deployment", "service")
+        service = client.CoreV1Api().\
+            list_namespaced_service('default',
+                                    field_selector=f"metadata.name={service_name}")
+        if service.items:
+            service = service.items[0]
         dic = {'name': i.metadata.name,
                'creation_timestamp': i.metadata.creation_timestamp,
                'namespace': i.metadata.namespace,
                'available_replicas': i.status.available_replicas,
-               'replicas': i.status.replicas}
+               'replicas': i.status.replicas,
+               'nodePort': service.spec.ports[0].node_port,
+               'containerPort': service.spec.ports[0].port}
         arr.append(dic)
 
     return JsonResponse(arr, safe=False)
