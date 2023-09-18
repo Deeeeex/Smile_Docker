@@ -58,9 +58,9 @@ def create_deployment(request):
                     'containers': [{
                         'name': request.POST.get('name'),
                         'image': request.POST.get('image'),
-                        'ports': {
+                        'ports': [{
                             'containerPort': int(container_port),
-                        },
+                        }],
                         'env': environment
                     }]
                 }
