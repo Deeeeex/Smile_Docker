@@ -28,8 +28,8 @@ def list_deployments(request):
 def delete_deployment(request):
     name = request.POST.get('name')
     namespace = request.POST.get('namespace')
-    client.AppsV1Api().delete_namespaced_deployment(name='deployment-'+name, namespace=namespace)
-    client.CoreV1Api().delete_namespaced_service(name='service-'+name, namespace=namespace)
+    client.AppsV1Api().delete_namespaced_deployment(name="deployment-"+name, namespace=namespace)
+    client.CoreV1Api().delete_namespaced_service(name="service-"+name, namespace=namespace)
     return JsonResponse('delete success', safe=False)
 
 
@@ -41,7 +41,7 @@ def create_deployment(request):
         'apiVersion': 'apps/v1',
         'kind': 'Deployment',
         'metadata': {
-            'name': 'deployment-'+request.POST.get('name'),
+            'name': "deployment-"+request.POST.get('name'),
         },
         'spec': {
             'replicas': 1,
@@ -74,7 +74,7 @@ def create_deployment(request):
         'apiVersion': 'v1',
         'kind': 'Service',
         'metadata': {
-            'name': 'service-' + request.POST.get('name'),
+            'name': "service-" + request.POST.get('name'),
             'labels': {
                 'service': request.POST.get('name')
             }
