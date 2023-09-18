@@ -26,9 +26,10 @@ def list_deployments(request):
 
 
 def delete_deployment(request):
-    name = request.POST['name']
-    namespace = request.POST['namespace']
-    client.AppsV1Api().delete_namespaced_deployment(name=name, namespace=namespace)
+    name = request.POST.get('name')
+    namespace = request.POST.get('namespace')
+    client.AppsV1Api().delete_namespaced_deployment(name='deployment-'+name, namespace=namespace)
+    client.CoreV1Api().delete_namespaced_service(name='service-'+name, namespace=namespace)
     return JsonResponse('delete success', safe=False)
 
 
