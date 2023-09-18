@@ -42,10 +42,14 @@ def list_images(request):
 
 def remove_image(request):
     image_id = request.POST.get('image_id')
-    client.images.remove(image_id, force=True)
-    return JsonResponse({
-        "msg": "删除镜像成功"
-    })
+
+    try:
+        client.images.remove(image_id, force=True)
+        response = '镜像删除成功'
+    except Exception as e:
+        response = f'镜像删除失败，请先删除相关容器: {str(e)}'
+
+    return JsonResponse(response, safe=False)
 
 
 def pull_image(request):
