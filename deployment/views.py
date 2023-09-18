@@ -22,12 +22,13 @@ def list_deployments(request):
             if keyword not in i.metadata.name:
                 continue
         service_name = i.metadata.name.replace("deployment", "service")
+        pod_name = i.metadata.name.replace("deployment", "pod")
         service_list = client.CoreV1Api().\
             list_namespaced_service('default',
                                     field_selector=f"metadata.name={service_name}")
         service = service_list.items[0]
         pod_list = client.CoreV1Api().list_namespaced_pod('default',
-                                                          field_selector=f"metadata.name={keyword}")
+                                                          field_selector=f"metadata.name={pod_name}")
         pod = pod_list.items[0]
         dic = {'name': i.metadata.name,
                'creation_timestamp': i.metadata.creation_timestamp,
