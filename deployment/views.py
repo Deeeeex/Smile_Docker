@@ -47,13 +47,13 @@ def create_deployment(request):
             'replicas': 1,
             'selector': {
                 'matchLabels': {
-                    'user': '1'
+                    'user': 'a'
                 }
             },
             'template': {
                 'metadata': {
                     'labels': {
-                        'user': '1'
+                        'user': 'a'
                     }
                 },
                 'spec': {
