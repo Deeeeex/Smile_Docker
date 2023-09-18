@@ -16,11 +16,10 @@ def list_deployments(request):
     arr = []
     for i in ret.items:
         service_name = i.metadata.name.replace("deployment", "service")
-        service = client.CoreV1Api().\
+        service_list = client.CoreV1Api().\
             list_namespaced_service('default',
                                     field_selector=f"metadata.name={service_name}")
-        if service.items:
-            service = service.items[0]
+        service = service_list.items[0]
         dic = {'name': i.metadata.name,
                'creation_timestamp': i.metadata.creation_timestamp,
                'namespace': i.metadata.namespace,
