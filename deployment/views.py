@@ -80,12 +80,12 @@ def create_deployment(request):
         },
         'spec': {
             'type': 'NodePort',
-            'ports': {
+            'ports': [{
                 'port': container_port,
                 'nodePort': node_port,
                 'protocol': 'TCP',
                 'name': 'anyway'
-            },
+            }],
             'selector': {
                 'user': '1'
             }
