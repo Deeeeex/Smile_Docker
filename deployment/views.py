@@ -1,5 +1,6 @@
 import json
 import random
+import string
 
 from django.shortcuts import render
 
@@ -22,15 +23,15 @@ def list_deployments(request):
             if keyword not in i.metadata.name:
                 continue
         service_name = i.metadata.name.replace("deployment", "service")
-        pod_name = i.metadata.name.replace("deployment", "pod")
-        label_selector_pod = "deployment="+i.metadata.name
+        pod_name = i.metadata.name[len("deployment"):]
+        label_selector_pod = "user="+pod_name
         service_list = client.CoreV1Api().\
             list_namespaced_service('default',
                                     field_selector=f"metadata.name={service_name}")
         service = service_list.items[0]
         ret = client.CoreV1Api().list_pod_for_all_namespaces(watch=False,
                                                              label_selector=label_selector_pod)
-        pod = ret.items[0]
+
         dic = {'name': i.metadata.name,
                'creation_timestamp': i.metadata.creation_timestamp,
                'namespace': i.metadata.namespace,
@@ -57,7 +58,6 @@ def create_deployment(request):
     container_port = request.POST.get('container_port')
     node_port = random.randint(30000, 32767)
     environment = json.loads(request.POST.get('environment'))
-    deployment_name = "deployment"+request.POST.get('name')
     deployment_manifest = {
         'apiVersion': 'apps/v1',
         'kind': 'Deployment',
@@ -78,7 +78,7 @@ def create_deployment(request):
             'template': {
                 'metadata': {
                     'labels': {
-                        'deployment': deployment_name
+                        'user': request.POST.get('name')
                     }
                 },
                 'spec': {
