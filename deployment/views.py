@@ -54,13 +54,13 @@ def create_deployment(request):
             'replicas': 1,
             'selector': {
                 'matchLabels': {
-                    'user': 'a'
+                    'user': request.POST.get('name')
                 }
             },
             'template': {
                 'metadata': {
                     'labels': {
-                        'user': 'a'
+                        'user': request.POST.get('name')
                     }
                 },
                 'spec': {
@@ -96,7 +96,7 @@ def create_deployment(request):
                 'name': 'anyway'
             }],
             'selector': {
-                'user': '1'
+                'user': request.POST.get('name')
             }
         }
     }
