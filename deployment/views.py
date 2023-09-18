@@ -1,3 +1,5 @@
+import random
+
 from django.shortcuts import render
 
 # Create your views here.
@@ -12,8 +14,10 @@ def list_deployments(request):
     ret = client.AppsV1Api().list_deployment_for_all_namespaces()
     arr = []
     for i in ret.items:
-        dic = {'name': i.metadata.name, 'creation_timestamp': i.metadata.creation_timestamp,
-               'namespace': i.metadata.namespace, 'available_replicas': i.status.available_replicas,
+        dic = {'name': i.metadata.name,
+               'creation_timestamp': i.metadata.creation_timestamp,
+               'namespace': i.metadata.namespace,
+               'available_replicas': i.status.available_replicas,
                'replicas': i.status.replicas}
         arr.append(dic)
 
@@ -28,9 +32,73 @@ def delete_deployment(request):
 
 
 def create_deployment(request):
-    dep = yaml.safe_load(request.files.get('config'))
-    client.AppsV1Api().create_namespaced_deployment(body=dep, namespace=request.form['namespace'])
-    return JsonResponse('create success', safe=False)
+    container_port = request.POST.get('container_port')
+    node_port = random.randint(10000, 99999)
+    environment = request.POST.get('environment')
+    deployment_manifest = {
+        'apiVersion': 'v1',
+        'kind': 'Deployment',
+        'metadata': {
+            'name': 'Deployment'+request.POST.get('name'),
+        },
+        'spec': {
+            'replicas': 1,
+            'selector': {
+                'matchLabels': {
+                    'user': '1'
+                }
+            },
+            'template': {
+                'metadata': {
+                    'labels': {
+                        'user': '1'
+                    }
+                },
+                'spec': {
+                    'containers': [{
+                        'name': request.POST.get('name'),
+                        'image': request.POST.get('image'),
+                        'ports': {
+                            'containerPort': int(container_port),
+                        },
+                        'env': environment
+                    }]
+                }
+            },
+        }
+    }
+
+    service_manifest = {
+        'apiVersion': 'v1',
+        'kind': 'Service',
+        'metadata': {
+            'name': 'Service' + request.POST.get('name'),
+            'labels': {
+                'service': request.POST.get('name')
+            }
+        },
+        'spec': {
+            'type': 'NodePort',
+            'ports': {
+                'port': container_port,
+                'nodePort': node_port,
+                'protocol': 'TCP',
+                'name': 'anyway'
+            },
+            'selector': {
+                'user': '1'
+            }
+        }
+    }
+
+    try:
+        client.AppsV1Api().create_namespaced_deployment(body=deployment_manifest, namespace="user")
+        client.CoreV1Api().create_namespaced_service(body=service_manifest, namespace="user")
+        response = '工作负载创建成功'
+    except Exception as e:
+        response = f'工作负载创建失败{str(e)}'
+        print(e)
+    return JsonResponse(response, safe=False)
 
 
 def update_deployment(request):
