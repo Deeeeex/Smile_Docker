@@ -36,7 +36,7 @@ def create_deployment(request):
     node_port = random.randint(10000, 99999)
     environment = request.POST.get('environment')
     deployment_manifest = {
-        'apiVersion': 'v1',
+        'apiVersion': 'apps/v1',
         'kind': 'Deployment',
         'metadata': {
             'name': 'Deployment'+request.POST.get('name'),
