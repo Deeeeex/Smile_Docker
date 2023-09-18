@@ -12,8 +12,9 @@ config.load_kube_config()
 
 
 def list_deployments(request):
+    field_selector = "metadata.labels.user=1"
     ret = client.AppsV1Api().list_namespaced_deployment('default',
-                                                        field_selector=f"metadata.labels=\"user=1\"")
+                                                        field_selector=field_selector)
     arr = []
     for i in ret.items:
         print(i.metadata.name)
