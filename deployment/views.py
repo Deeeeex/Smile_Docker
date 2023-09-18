@@ -23,7 +23,7 @@ def list_deployments(request):
             if keyword not in i.metadata.name:
                 continue
         service_name = i.metadata.name.replace("deployment", "service")
-        pod_name = i.metadata.name[len("deployment"):]
+        pod_name = i.metadata.name[len("deployment-"):]
         label_selector_pod = "user="+pod_name
         service_list = client.CoreV1Api().\
             list_namespaced_service('default',
