@@ -35,7 +35,7 @@ def delete_deployment(request):
 
 def create_deployment(request):
     container_port = request.POST.get('container_port')
-    node_port = random.randint(10000, 99999)
+    node_port = random.randint(30000, 32767)
     environment = json.loads(request.POST.get('environment'))
     deployment_manifest = {
         'apiVersion': 'apps/v1',
