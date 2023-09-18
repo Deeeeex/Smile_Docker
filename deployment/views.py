@@ -16,6 +16,7 @@ def list_deployments(request):
     arr = []
     for i in ret.items:
         service_name = i.metadata.name.replace("deployment", "service")
+        print(service_name)
         service_list = client.CoreV1Api().\
             list_namespaced_service('default',
                                     field_selector=f"metadata.name={service_name}")
