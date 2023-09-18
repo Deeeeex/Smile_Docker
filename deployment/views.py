@@ -15,6 +15,7 @@ def list_deployments(request):
     ret = client.AppsV1Api().list_deployment_for_all_namespaces()
     arr = []
     for i in ret.items:
+        print(i.metadata.name)
         service_name = i.metadata.name.replace("deployment", "service")
         print(service_name)
         service_list = client.CoreV1Api().\
