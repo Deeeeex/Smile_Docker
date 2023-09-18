@@ -40,7 +40,7 @@ def create_deployment(request):
         'apiVersion': 'apps/v1',
         'kind': 'Deployment',
         'metadata': {
-            'name': 'Deployment'+request.POST.get('name'),
+            'name': 'deployment'+request.POST.get('name'),
         },
         'spec': {
             'replicas': 1,
@@ -73,7 +73,7 @@ def create_deployment(request):
         'apiVersion': 'v1',
         'kind': 'Service',
         'metadata': {
-            'name': 'Service' + request.POST.get('name'),
+            'name': 'service' + request.POST.get('name'),
             'labels': {
                 'service': request.POST.get('name')
             }
