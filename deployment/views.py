@@ -82,7 +82,7 @@ def create_deployment(request):
         'spec': {
             'type': 'NodePort',
             'ports': [{
-                'port': container_port,
+                'port': int(container_port),
                 'nodePort': node_port,
                 'protocol': 'TCP',
                 'name': 'anyway'
