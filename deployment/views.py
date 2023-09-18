@@ -63,7 +63,8 @@ def create_deployment(request):
                         'ports': [{
                             'containerPort': int(container_port),
                         }],
-                        'env': environment
+                        'env': environment,
+                        'imagePullPolicy': 'IfNotPresent'
                     }]
                 }
             },
