@@ -39,7 +39,7 @@ def list_deployments(request):
                'replicas': i.status.replicas,
                'nodePort': service.spec.ports[0].node_port,
                'containerPort': service.spec.ports[0].port,
-               'containerId': pod.status.container_statuses[0].container_id,
+               'containerId': pod.status.container_statuses[0].container_id[len("docker://"):len("docker://")+12],
                'image': pod.spec.containers[0].image}
         arr.append(dic)
 
