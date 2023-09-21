@@ -32,6 +32,14 @@ def list_deployments(request):
         ret = client.CoreV1Api().list_pod_for_all_namespaces(watch=False,
                                                              label_selector=label_selector_pod)
         pod = ret.items[0]
+
+        try:
+            containerId = pod.status.container_statuses[0].container_id[len("docker://"):len("docker://") + 12],
+            image = pod.spec.containers[0].image
+        except Exception as e:
+            containerId = "null"
+            image = "null"
+
         dic = {'name': i.metadata.name,
                'creation_timestamp': i.metadata.creation_timestamp,
                'namespace': i.metadata.namespace,
@@ -39,8 +47,8 @@ def list_deployments(request):
                'replicas': i.status.replicas,
                'nodePort': service.spec.ports[0].node_port,
                'containerPort': service.spec.ports[0].port,
-               'containerId': pod.status.container_statuses[0].container_id[len("docker://"):len("docker://") + 12],
-               'image': pod.spec.containers[0].image}
+               'containerId': containerId,
+               'image': image}
         arr.append(dic)
 
     return JsonResponse(arr, safe=False)
