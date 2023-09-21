@@ -31,9 +31,9 @@ def list_deployments(request):
         service = service_list.items[0]
         ret = client.CoreV1Api().list_pod_for_all_namespaces(watch=False,
                                                              label_selector=label_selector_pod)
-        pod = ret.items[0]
 
         try:
+            pod = ret.items[0]
             containerId = pod.status.container_statuses[0].container_id[len("docker://"):len("docker://") + 12],
             image = pod.spec.containers[0].image
         except Exception as e:
