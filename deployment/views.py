@@ -136,3 +136,13 @@ def update_deployment(request):
     return JsonResponse('update success', safe=False)
 
 
+def stop_deployment(request):
+    deployment_name = request.POST.get('name')
+    scale_body = {"spec": {"replicas": 0}}
+    client.AppsV1Api.patch_namespaced_deployment_scale(name=deployment_name, namespace="default", body=scale_body)
+
+
+def run_deployment(request):
+    deployment_name = request.POST.get('name')
+    scale_body = {"spec": {"replicas": 1}}
+    client.AppsV1Api.patch_namespaced_deployment_scale(name=deployment_name, namespace="default", body=scale_body)

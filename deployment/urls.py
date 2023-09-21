@@ -7,4 +7,6 @@ urlpatterns = [
     path("delete_deployment/", views.delete_deployment),
     path("create_deployment/", views.create_deployment),
     path("update_deployment/", views.update_deployment),
+    path("stop_deployment/", views.stop_deployment),
+    path("run_deployment/", views.run_deployment),
 ]
