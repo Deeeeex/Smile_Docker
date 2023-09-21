@@ -24,8 +24,8 @@ def list_deployments(request):
                 continue
         service_name = i.metadata.name.replace("deployment", "service")
         pod_name = i.metadata.name[len("deployment-"):]
-        label_selector_pod = "user="+pod_name
-        service_list = client.CoreV1Api().\
+        label_selector_pod = "user=" + pod_name
+        service_list = client.CoreV1Api(). \
             list_namespaced_service('default',
                                     field_selector=f"metadata.name={service_name}")
         service = service_list.items[0]
@@ -39,7 +39,7 @@ def list_deployments(request):
                'replicas': i.status.replicas,
                'nodePort': service.spec.ports[0].node_port,
                'containerPort': service.spec.ports[0].port,
-               'containerId': pod.status.container_statuses[0].container_id[len("docker://"):len("docker://")+12],
+               'containerId': pod.status.container_statuses[0].container_id[len("docker://"):len("docker://") + 12],
                'image': pod.spec.containers[0].image}
         arr.append(dic)
 
@@ -49,8 +49,8 @@ def list_deployments(request):
 def delete_deployment(request):
     name = request.POST.get('name')
     namespace = 'default'
-    client.AppsV1Api().delete_namespaced_deployment(name="deployment-"+name, namespace=namespace)
-    client.CoreV1Api().delete_namespaced_service(name="service-"+name, namespace=namespace)
+    client.AppsV1Api().delete_namespaced_deployment(name="deployment-" + name, namespace=namespace)
+    client.CoreV1Api().delete_namespaced_service(name="service-" + name, namespace=namespace)
     return JsonResponse('delete success', safe=False)
 
 
@@ -62,10 +62,10 @@ def create_deployment(request):
         'apiVersion': 'apps/v1',
         'kind': 'Deployment',
         'metadata': {
-            'name': "deployment-"+request.POST.get('name'),
+            'name': "deployment-" + request.POST.get('name'),
             'labels': {
                 'user': '1',
-                'deployment': "deployment-"+request.POST.get('name')
+                'deployment': "deployment-" + request.POST.get('name')
             }
         },
         'spec': {
@@ -139,9 +139,9 @@ def update_deployment(request):
 def stop_deployment(request):
     deployment_name = request.POST.get('name')
     scale_body = {"spec": {"replicas": 0}}
-    client.AppsV1Api.patch_namespaced_deployment_scale(name=deployment_name,
-                                                       namespace="default",
-                                                       body=scale_body)
+    client.AppsV1Api().patch_namespaced_deployment_scale(name=deployment_name,
+                                                         namespace="default",
+                                                         body=scale_body)
 
     return JsonResponse('stop success', safe=False)
 
@@ -149,7 +149,7 @@ def stop_deployment(request):
 def run_deployment(request):
     deployment_name = request.POST.get('name')
     scale_body = {"spec": {"replicas": 1}}
-    client.AppsV1Api.patch_namespaced_deployment_scale(name=deployment_name,
-                                                       namespace="default",
-                                                       body=scale_body)
+    client.AppsV1Api().patch_namespaced_deployment_scale(name=deployment_name,
+                                                         namespace="default",
+                                                         body=scale_body)
     return JsonResponse('restart success', safe=False)
